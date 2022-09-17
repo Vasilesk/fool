@@ -70,9 +70,9 @@ func Test_stdDeck_GetMax(t *testing.T) {
 				trump: tt.fields.trump,
 				pos:   tt.fields.pos,
 			}
-			got := d.GetMax(tt.args.n)
+			got := d.TakeMax(tt.args.n)
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("GetMax() got = %v, want %v", got, tt.want)
+				t.Errorf("TakeMax() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

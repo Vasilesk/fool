@@ -15,20 +15,20 @@ type stdDeck struct {
 	pos int
 }
 
-func (d *stdDeck) GetMax(n int) []card.Card {
+func (d *stdDeck) TakeMax(lim int) []card.Card {
 	cardsLeft := len(d.cards) - d.pos
 
 	if cardsLeft == 0 {
 		return nil
 	}
 
-	if n > cardsLeft {
-		n = cardsLeft
+	if lim > cardsLeft {
+		lim = cardsLeft
 	}
 
-	res := d.cards[d.pos : d.pos+n]
+	res := d.cards[d.pos : d.pos+lim]
 
-	d.pos += n
+	d.pos += lim
 
 	return res
 }

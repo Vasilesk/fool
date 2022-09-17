@@ -7,6 +7,7 @@ import (
 	"github.com/vasilesk/fool/internal/game/cards/deck"
 	"github.com/vasilesk/fool/internal/game/gameplay"
 	"github.com/vasilesk/fool/internal/game/gameplay/round"
+	"github.com/vasilesk/fool/internal/game/players/orderstrategy"
 	"github.com/vasilesk/fool/internal/game/players/player"
 	"github.com/vasilesk/fool/internal/game/players/selectstrategy"
 	"github.com/vasilesk/fool/pkg/card"
@@ -14,9 +15,24 @@ import (
 )
 
 type Game struct {
-	deck     deck.Deck
-	players  []player.Player
-	strategy selectstrategy.Strategy
+	deck           deck.Deck
+	players        []player.Player
+	orderStrategy  orderstrategy.Strategy
+	selectStrategy selectstrategy.Strategy
+}
+
+func NewGame(
+	deck deck.Deck,
+	players []player.Player,
+	orderStrategy orderstrategy.Strategy,
+	selectStrategy selectstrategy.Strategy,
+) *Game {
+	return &Game{
+		deck:           deck,
+		players:        players,
+		orderStrategy:  orderStrategy,
+		selectStrategy: selectStrategy,
+	}
 }
 
 func (g Game) Run() (identity.Identity, error) {
@@ -32,7 +48,7 @@ func (g Game) Run() (identity.Identity, error) {
 	taken := false
 
 	for inGame {
-		attacker, defender, inGame = g.strategy.NextRound(taken)
+		attacker, defender, inGame = g.selectStrategy.NextRound(taken)
 		if taken {
 			defender.TakeLostRound(cards)
 		}
@@ -43,7 +59,7 @@ func (g Game) Run() (identity.Identity, error) {
 		}
 
 		for _, p := range g.players {
-			p.TakeDeck(g.deck.GetMax(gameplay.MaxCardsOfPlayer - p.CardsCount()))
+			p.TakeDeck(g.deck.TakeMax(gameplay.MaxCardsOfPlayer - p.CardsCount()))
 		}
 	}
 
