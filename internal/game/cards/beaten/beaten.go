@@ -19,7 +19,7 @@ func (cc Beaten) GetAnswer() card.Card {
 	return cc.answer
 }
 
-func NewBeaten(move card.Card, answer card.Card, trump card.Suit) (Beaten, error) {
+func NewBeaten(move card.Card, answer card.Card, trump card.Suit) (Beaten, error) { // todo: rewrite
 	if move.Suit() != trump && answer.Suit() == trump {
 		return Beaten{move: move, answer: answer}, nil
 	}
@@ -29,6 +29,10 @@ func NewBeaten(move card.Card, answer card.Card, trump card.Suit) (Beaten, error
 	}
 
 	return Beaten{}, fmt.Errorf("invalid answer %v to card %v", answer, move)
+}
+
+func Beats(who card.Card, whom card.Card, trump card.Suit) bool {
+	return (who.Suit() == whom.Suit() && who.Weight() > whom.Weight()) || (who.Suit() == trump && whom.Suit() != trump)
 }
 
 func GetCards(bb []Beaten) []card.Card {

@@ -37,20 +37,17 @@ func NewGame(
 
 func (g Game) Run() (identity.Identity, error) {
 	var (
-		cards    []card.Card
-		attacker player.AttackerWithIdentity
-		defender player.DefenderWithIdentity
+		cards []card.Card
 
 		err error
 	)
 
-	inGame := true
 	taken := false
 
-	for inGame {
-		attacker, defender, inGame = g.selectStrategy.NextRound(taken)
-		if taken {
-			defender.TakeLostRound(cards)
+	for {
+		attacker, defender, inGame := g.selectStrategy.NextRound(taken)
+		if !inGame {
+			break
 		}
 
 		cards, taken, err = round.NewRound(attacker, defender, g.deck.Trump().Suit()).Run()
@@ -58,8 +55,14 @@ func (g Game) Run() (identity.Identity, error) {
 			return nil, fmt.Errorf("running round: %w", err)
 		}
 
+		if taken {
+			defender.TakeLostRound(cards)
+		}
+
 		for _, p := range g.players {
-			p.TakeDeck(g.deck.TakeMax(gameplay.MaxCardsOfPlayer - p.CardsCount()))
+			if p.CardsCount() < gameplay.MaxCardsOfPlayer {
+				p.TakeDeck(g.deck.TakeMax(gameplay.MaxCardsOfPlayer - p.CardsCount()))
+			}
 		}
 	}
 

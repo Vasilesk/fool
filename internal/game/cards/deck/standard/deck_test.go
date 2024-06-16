@@ -7,7 +7,10 @@ import (
 	"github.com/vasilesk/fool/pkg/card"
 )
 
+//nolint:funlen
 func Test_stdDeck_GetMax(t *testing.T) {
+	t.Parallel()
+
 	ordered := newOrdered()
 
 	type fields struct {
@@ -65,11 +68,14 @@ func Test_stdDeck_GetMax(t *testing.T) {
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			d := &stdDeck{
 				cards: tt.fields.cards,
 				trump: tt.fields.trump,
 				pos:   tt.fields.pos,
 			}
+
 			got := d.TakeMax(tt.args.n)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("TakeMax() got = %v, want %v", got, tt.want)

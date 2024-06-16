@@ -1,6 +1,7 @@
 package round
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/vasilesk/fool/internal/game/cards/beaten"
@@ -40,6 +41,10 @@ func (r Round) Run() (cards []card.Card, taken bool, err error) {
 	move, err := attack.MakeMove(wereBeaten)
 	if err != nil {
 		return nil, false, fmt.Errorf("making first attack: %w", err)
+	}
+
+	if len(move) == 0 {
+		return nil, false, errors.New("empty move")
 	}
 
 	for len(move) > 0 {

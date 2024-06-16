@@ -1,72 +1,94 @@
+run:
+  go: "1.22"
+  timeout: 5m
 linters:
   enable-all: true
   disable:
-    - unused
-    - interfacer
-    - ireturn
-    - varnamelen
-    - maligned
-    - goerr113
-    - paralleltest
+    - godot
     - testpackage
-    - scopelint # deprecated
-    - golint # deprecated
-    - exhaustivestruct # deprecated
-#  enable:
-#    - bodyclose
-#    - deadcode
-#    - depguard
-#    - dogsled
-#    - dupl
-#    - errcheck
-#    - exportloopref
-#    - exhaustive
-#    - funlen
-#    - gochecknoinits
-#    - goconst
-#    - gocritic
-#    - gocyclo
-#    - gofmt
-#    - goimports
-#    - gomnd
-#    - goprintffuncname
-#    - gosec
-#    - gosimple
-#    - govet
-#    - ineffassign
-#    - lll
-#    - misspell
-#    - nakedret
-#    - noctx
-#    - nolintlint
-#    - rowserrcheck
-#    - staticcheck
-#    - structcheck
-#    - stylecheck
-#    - typecheck
-#    - unconvert
-#    - unparam
-#    - unused
-#    - varcheck
-#    - whitespace
-#    - wsl
-#    - revive
-#    - exportloopref
-#    - asciicheck
-#    - gochecknoglobals
-#    - goerr113
-#    - gocognit
-#    - godox
-#    - godot
-#    - nestif
-#    - prealloc
-#    - testpackage
-#    - nestif
+    - ireturn
+    - maligned
+    - interfacer
+    - varnamelen
+    - golint
+    - exhaustivestruct
+    - goerr113
+    - depguard
+    # deprecated
+    - nosnakecase
+    - structcheck
+    - deadcode
+    - scopelint
+    - varcheck
+    - ifshort
 linters-settings:
   gci:
     sections:
-      - Standard
-      - Default
-      - "Prefix(github.com/vasilesk)"
+      - standard
+      - default
+      - prefix(github.com/vasilesk)
+  godox:
+    keywords:
+      - BUG
+      - FIXME
+  gocyclo:
+    min-complexity: 15
+  cyclop:
+    max-complexity: 15
+  nestif:
+    min-complexity: 10
+  dupl:
+    threshold: 160
   funlen:
-    lines: 80
+    lines: 60
+    statements: 40
+  gosec:
+    excludes:
+      - G402
+  tagliatelle:
+    case:
+      use-field-name: false
+      rules:
+        json: snake
+        yaml: camel
+        xml: camel
+        bson: camel
+        avro: snake
+        mapstructure: kebab
+  wrapcheck:
+    ignoreSigs:
+      - .Errorf(
+      - errors.New(
+      - errors.Unwrap(
+      - .Wrap(
+      - .Wrapf(
+      - .WithMessage(
+      - .WithMessagef(
+      - .WithStack(
+  interfacebloat:
+    max: 15
+  errorlint:
+    asserts: false
+issues:
+  max-same: 0
+  max-per-linter: 0
+  exclude-rules:
+    - linters:
+        - revive
+      text: "exported: comment on exported"
+    - linters:
+        - revive
+      text: "package-comments: package comment should be of the form"
+    - linters:
+        - stylecheck
+        - revive
+      text: "should have a package comment"
+    - linters:
+        - stylecheck
+        - revive
+      text: "should have comment or be unexported"
+    - linters:
+        - stylecheck
+        - revive
+      text: "or a comment on this block"
+  exclude-use-default: false

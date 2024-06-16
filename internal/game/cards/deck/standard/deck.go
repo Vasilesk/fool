@@ -2,7 +2,7 @@ package standard
 
 import (
 	"math/rand"
-	"time"
+	"slices"
 
 	"github.com/vasilesk/fool/internal/game/cards/deck"
 	"github.com/vasilesk/fool/pkg/card"
@@ -13,6 +13,16 @@ type stdDeck struct {
 	trump card.Card
 
 	pos int
+}
+
+func NewDeck() deck.Deck {
+	d := newOrdered()
+
+	rand.Shuffle(len(d.cards), func(i, j int) {
+		d.cards[i], d.cards[j] = d.cards[j], d.cards[i]
+	})
+
+	return d
 }
 
 func (d *stdDeck) TakeMax(lim int) []card.Card {
@@ -26,7 +36,7 @@ func (d *stdDeck) TakeMax(lim int) []card.Card {
 		lim = cardsLeft
 	}
 
-	res := d.cards[d.pos : d.pos+lim]
+	res := slices.Concat(d.cards[d.pos : d.pos+lim])
 
 	d.pos += lim
 
@@ -35,22 +45,6 @@ func (d *stdDeck) TakeMax(lim int) []card.Card {
 
 func (d *stdDeck) Trump() card.Card {
 	return d.trump
-}
-
-func New() deck.Deck {
-	return NewFromSeed(time.Now().UnixNano())
-}
-
-func NewFromSeed(s int64) deck.Deck {
-	d := newOrdered()
-
-	rand.Seed(s)
-
-	rand.Shuffle(len(d.cards), func(i, j int) {
-		d.cards[i], d.cards[j] = d.cards[j], d.cards[i]
-	})
-
-	return d
 }
 
 func newOrdered() *stdDeck {
