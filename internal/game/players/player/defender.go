@@ -1,7 +1,6 @@
 package player
 
 import (
-	"github.com/vasilesk/fool/internal/game/cards/beaten"
 	"github.com/vasilesk/fool/pkg/card"
 	"github.com/vasilesk/fool/pkg/identity"
 )
@@ -13,7 +12,7 @@ type Defender interface {
 }
 
 type RoundDefenderStrategy interface {
-	AnswerMove(move []card.Card, wereBeaten []beaten.Beaten) (moreBeaten []beaten.Beaten, answered bool)
+	AnswerMove(move []card.Card) ([]card.Card, bool)
 }
 
 type DefenderWithIdentity interface {

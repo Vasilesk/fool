@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/samber/lo"
+
 	"github.com/vasilesk/fool/internal/game/cards/beaten"
 	"github.com/vasilesk/fool/internal/game/gameplay"
 	"github.com/vasilesk/fool/internal/game/players/player"
@@ -33,12 +35,10 @@ func NewRound(
 func (r Round) Run() (cards []card.Card, taken bool, err error) {
 	const maxBeaten = gameplay.MaxCardsOfPlayer
 
-	wereBeaten := make([]beaten.Beaten, 0, maxBeaten)
-
 	attack := r.attacker.GetRoundAttackerStrategy(r.defender)
 	defend := r.defender.GetRoundDefenderStrategy(r.attacker)
 
-	move, err := attack.MakeMove(wereBeaten)
+	move, err := attack.MakeMove(nil)
 	if err != nil {
 		return nil, false, fmt.Errorf("making first attack: %w", err)
 	}
@@ -47,13 +47,30 @@ func (r Round) Run() (cards []card.Card, taken bool, err error) {
 		return nil, false, errors.New("empty move")
 	}
 
+	wereBeaten := make([]beaten.Beaten, 0, maxBeaten)
+
 	for len(move) > 0 {
-		answer, answered := defend.AnswerMove(move, wereBeaten)
+		answer, answered := defend.AnswerMove(move)
 		if !answered {
 			return makeTaken(wereBeaten, move), true, nil
 		}
 
-		wereBeaten = append(wereBeaten, answer...)
+		if len(answer) != len(move) {
+			return nil, false, errors.New("answer length mismatch")
+		}
+
+		wereBeaten = append(wereBeaten,
+			lo.FilterMap(lo.Zip2(move, answer), func(item lo.Tuple2[card.Card, card.Card], _ int) (beaten.Beaten, bool) {
+				b, err := beaten.NewBeaten(item.A, item.B, r.trump)
+
+				return b, err == nil
+			})...,
+		)
+
+		if len(wereBeaten) != len(move) {
+			return nil, false, errors.New("not correct beaten")
+		}
+
 		if len(wereBeaten) == maxBeaten {
 			return beaten.GetCards(wereBeaten), false, nil
 		}
