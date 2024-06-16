@@ -19,12 +19,21 @@ func newAttacker(c *console) *attacker {
 	return &attacker{console: c}
 }
 
-func (a *attacker) MakeMove(_ []beaten.Beaten) ([]card.Card, error) {
+func (a *attacker) MakeMove(bb []beaten.Beaten) ([]card.Card, error) { // todo: extract first move?
 	sortCards(a.cards, a.trump)
 
-	fmt.Println(a.name, "make your move, you have", a.cards, "trump is", a.trump)
+	fmt.Println(a.name, "make your move, trump is", a.trump)
 
-	cards, err := readCardsByNumbers(a.cards)
+	possibleMoves := a.cards
+	if bb != nil {
+		possibleMoves = lo.Filter(possibleMoves, func(move card.Card, _ int) bool {
+			return lo.SomeBy(beaten.GetCards(bb), func(b card.Card) bool {
+				return b.Weight() == move.Weight()
+			})
+		})
+	}
+
+	cards, err := readCardsByNumbers(possibleMoves)
 	if err != nil {
 		fmt.Println("failed to read cards")
 

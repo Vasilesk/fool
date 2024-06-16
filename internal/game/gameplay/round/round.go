@@ -67,13 +67,9 @@ func (r Round) Run() (cards []card.Card, taken bool, err error) {
 			})...,
 		)
 
-		if len(wereBeaten) != len(move) {
-			return nil, false, errors.New("not correct beaten")
-		}
-
-		if len(wereBeaten) == maxBeaten {
+		if len(wereBeaten) >= maxBeaten {
 			return beaten.GetCards(wereBeaten), false, nil
-		}
+		} // todo: rules here
 
 		move, err = attack.MakeMove(wereBeaten)
 		if err != nil {

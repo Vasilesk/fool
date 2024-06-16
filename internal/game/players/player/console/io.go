@@ -27,10 +27,10 @@ func readCardsByNumbers(cards []card.Card) ([]card.Card, error) {
 
 	res := make([]card.Card, 0, len(cards))
 
-	for _, numStr := range strings.Split(numbersStr, " ") {
+	for _, numStr := range strings.Split(numbersStr, " ") { // todo: check why several not working
 		num, err := strconv.Atoi(numStr)
 		if err != nil {
-			return nil, fmt.Errorf("parsing number: %w", err) // todo: change to loop
+			return nil, fmt.Errorf("parsing number: %w", err) // todo: change to retry loop
 		}
 
 		if num == 0 {
@@ -49,6 +49,7 @@ func readCardsByNumbers(cards []card.Card) ([]card.Card, error) {
 	return res, nil
 }
 
+//nolint:unused
 func readCard() (card.Card, error) {
 	var cardStr string
 

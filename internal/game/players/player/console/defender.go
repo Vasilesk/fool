@@ -24,28 +24,26 @@ func (d *defender) AnswerMove(move []card.Card) ([]card.Card, bool) {
 
 	fmt.Println(d.name, "defending from", move, "you have", d.cards, "trump is", d.trump)
 
-	res := make([]card.Card, 0, len(move))
+	possibleAnswers := lo.Filter(d.cards, func(answer card.Card, _ int) bool {
+		return lo.SomeBy(move, func(m card.Card) bool {
+			return beaten.Beats(answer, m, d.trump)
+		})
+	})
 
-	for _, m := range move {
-		c, err := readCard()
-		if err != nil {
-			return nil, false
-		}
+	cards, err := readCardsByNumbers(possibleAnswers)
+	if err != nil {
+		fmt.Println("failed to read cards")
 
-		if !slices.Contains(d.cards, c) {
-			return nil, false
-		}
+		return nil, false
+	}
 
-		if !beaten.Beats(c, m, d.trump) {
-			return nil, false
-		}
-
-		res = append(res, c)
+	if len(cards) == 0 {
+		return nil, false
 	}
 
 	d.cards = lo.Filter(d.cards, func(item card.Card, _ int) bool {
-		return !slices.Contains(res, item)
+		return !slices.Contains(cards, item)
 	})
 
-	return res, true
+	return cards, true
 }
