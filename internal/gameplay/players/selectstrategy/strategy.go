@@ -5,9 +5,10 @@ import (
 )
 
 type Strategy interface {
-	NextRound(wasLost bool) (
+	NextPlayers(wasLost bool) (
+		inGame bool,
 		attacker player.AttackerWithIdentity,
 		defender player.DefenderWithIdentity,
-		inGame bool,
+		moreAttackers []player.AttackerWithIdentity,
 	)
 }

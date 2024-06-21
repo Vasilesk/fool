@@ -5,12 +5,11 @@ import (
 	"log"
 
 	"github.com/vasilesk/fool/internal/gameplay"
-	deskstandard "github.com/vasilesk/fool/internal/gameplay/cards/deck/standard"
+	deckstd "github.com/vasilesk/fool/internal/gameplay/cards/deck/standard"
 	"github.com/vasilesk/fool/internal/gameplay/game"
-	orderstrategyrandom "github.com/vasilesk/fool/internal/gameplay/players/orderstrategy/random"
 	"github.com/vasilesk/fool/internal/gameplay/players/player"
 	"github.com/vasilesk/fool/internal/gameplay/players/player/console"
-	selectstrategystandard "github.com/vasilesk/fool/internal/gameplay/players/selectstrategy/standard"
+	selstratstd "github.com/vasilesk/fool/internal/gameplay/players/selectstrategy/standard"
 )
 
 func main() {
@@ -22,7 +21,7 @@ func main() {
 }
 
 func run() error {
-	d := deskstandard.NewDeck()
+	d := deckstd.NewDeck()
 
 	p1, err := console.NewPlayer(d.TakeMax(gameplay.MaxCardsOfPlayer), d.TrumpCard().Suit())
 	if err != nil {
@@ -36,12 +35,12 @@ func run() error {
 
 	players := []player.Player{p1, p2}
 
-	selstrat, err := selectstrategystandard.NewStrategyFFA(players)
+	selstrat, err := selstratstd.NewStrategyFFA(players)
 	if err != nil {
 		return fmt.Errorf("creating select strategy: %w", err)
 	}
 
-	g := game.NewGame(d, players, orderstrategyrandom.New(), selstrat)
+	g := game.NewGame(d, players, selstrat)
 
 	log.Println("game started")
 

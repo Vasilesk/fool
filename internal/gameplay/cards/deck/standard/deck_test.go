@@ -33,7 +33,7 @@ func Test_stdDeck_GetMax(t *testing.T) {
 			name: "three acquired",
 			fields: fields{
 				cards: ordered.cards,
-				trump: ordered.trump,
+				trump: ordered.trumpCard,
 				pos:   0,
 			},
 			args: args{n: 3},
@@ -47,7 +47,7 @@ func Test_stdDeck_GetMax(t *testing.T) {
 			name: "all acquired",
 			fields: fields{
 				cards: ordered.cards,
-				trump: ordered.trump,
+				trump: ordered.trumpCard,
 				pos:   0,
 			},
 			args: args{n: 36},
@@ -57,7 +57,7 @@ func Test_stdDeck_GetMax(t *testing.T) {
 			name: "too much acquired",
 			fields: fields{
 				cards: ordered.cards,
-				trump: ordered.trump,
+				trump: ordered.trumpCard,
 				pos:   0,
 			},
 			args: args{n: 100},
@@ -71,9 +71,9 @@ func Test_stdDeck_GetMax(t *testing.T) {
 			t.Parallel()
 
 			d := &stdDeck{
-				cards: tt.fields.cards,
-				trump: tt.fields.trump,
-				pos:   tt.fields.pos,
+				cards:     tt.fields.cards,
+				trumpCard: tt.fields.trump,
+				pos:       tt.fields.pos,
 			}
 
 			got := d.TakeMax(tt.args.n)

@@ -13,8 +13,9 @@ import (
 )
 
 type Round struct {
-	attacker player.AttackerWithIdentity
-	defender player.DefenderWithIdentity
+	attacker      player.AttackerWithIdentity
+	defender      player.DefenderWithIdentity
+	moreAttackers []player.AttackerWithIdentity
 
 	trump card.Suit
 }
@@ -22,12 +23,14 @@ type Round struct {
 func NewRound(
 	attacker player.AttackerWithIdentity,
 	defender player.DefenderWithIdentity,
+	moreAttackers []player.AttackerWithIdentity,
 	trump card.Suit,
 ) Round {
 	return Round{
-		attacker: attacker,
-		defender: defender,
-		trump:    trump,
+		attacker:      attacker,
+		defender:      defender,
+		moreAttackers: moreAttackers,
+		trump:         trump,
 	}
 }
 
@@ -49,13 +52,14 @@ func (r Round) Run() (cards []card.Card, taken bool, err error) {
 
 	wereBeaten := make([]beaten.Beaten, 0, maxBeaten)
 
+	// todo: rewrite it, add other attackers
 	for len(move) > 0 {
 		answer, answered := defend.AnswerMove(move)
 		if !answered {
 			return makeTaken(wereBeaten, move), true, nil
 		}
 
-		if len(answer) != len(move) {
+		if len(answer) != len(move) { // todo: not here
 			return nil, false, errors.New("answer length mismatch")
 		}
 

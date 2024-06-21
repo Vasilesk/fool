@@ -7,7 +7,6 @@ import (
 	"github.com/vasilesk/fool/internal/gameplay"
 	"github.com/vasilesk/fool/internal/gameplay/cards/deck"
 	"github.com/vasilesk/fool/internal/gameplay/game/round"
-	"github.com/vasilesk/fool/internal/gameplay/players/orderstrategy"
 	"github.com/vasilesk/fool/internal/gameplay/players/player"
 	"github.com/vasilesk/fool/internal/gameplay/players/selectstrategy"
 	"github.com/vasilesk/fool/pkg/card"
@@ -17,20 +16,17 @@ import (
 type Game struct {
 	deck           deck.Deck
 	players        []player.Player
-	orderStrategy  orderstrategy.Strategy
 	selectStrategy selectstrategy.Strategy
 }
 
 func NewGame(
 	deck deck.Deck,
 	players []player.Player,
-	orderStrategy orderstrategy.Strategy,
 	selectStrategy selectstrategy.Strategy,
 ) *Game {
 	return &Game{
 		deck:           deck,
 		players:        players,
-		orderStrategy:  orderStrategy,
 		selectStrategy: selectStrategy,
 	}
 }
@@ -45,12 +41,12 @@ func (g Game) Run() (identity.Identity, error) {
 	taken := false
 
 	for {
-		attacker, defender, inGame := g.selectStrategy.NextRound(taken)
+		inGame, attacker, defender, moreAttackers := g.selectStrategy.NextPlayers(taken)
 		if !inGame {
 			break
 		}
 
-		cards, taken, err = round.NewRound(attacker, defender, g.deck.TrumpCard().Suit()).Run()
+		cards, taken, err = round.NewRound(attacker, defender, moreAttackers, g.deck.TrumpCard().Suit()).Run()
 		if err != nil {
 			return nil, fmt.Errorf("running round: %w", err)
 		}

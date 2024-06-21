@@ -9,8 +9,8 @@ import (
 )
 
 type stdDeck struct {
-	cards []card.Card
-	trump card.Card
+	cards     []card.Card
+	trumpCard card.Card
 
 	pos int
 }
@@ -21,6 +21,8 @@ func NewDeck() deck.Deck {
 	rand.Shuffle(len(d.cards), func(i, j int) {
 		d.cards[i], d.cards[j] = d.cards[j], d.cards[i]
 	})
+
+	d.trumpCard = d.cards[len(d.cards)-1]
 
 	return d
 }
@@ -44,7 +46,7 @@ func (d *stdDeck) TakeMax(lim int) []card.Card {
 }
 
 func (d *stdDeck) TrumpCard() card.Card {
-	return d.trump
+	return d.trumpCard
 }
 
 func newOrdered() *stdDeck {
@@ -75,5 +77,5 @@ func newOrdered() *stdDeck {
 		}
 	}
 
-	return &stdDeck{cards: cards, trump: cards[(len(cards) - 1)], pos: 0}
+	return &stdDeck{cards: cards, trumpCard: cards[(len(cards) - 1)], pos: 0}
 }
