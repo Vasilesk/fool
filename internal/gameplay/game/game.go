@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/vasilesk/fool/internal/game/cards/deck"
-	"github.com/vasilesk/fool/internal/game/gameplay"
-	"github.com/vasilesk/fool/internal/game/gameplay/round"
-	"github.com/vasilesk/fool/internal/game/players/orderstrategy"
-	"github.com/vasilesk/fool/internal/game/players/player"
-	"github.com/vasilesk/fool/internal/game/players/selectstrategy"
+	"github.com/vasilesk/fool/internal/gameplay"
+	"github.com/vasilesk/fool/internal/gameplay/cards/deck"
+	"github.com/vasilesk/fool/internal/gameplay/game/round"
+	"github.com/vasilesk/fool/internal/gameplay/players/orderstrategy"
+	"github.com/vasilesk/fool/internal/gameplay/players/player"
+	"github.com/vasilesk/fool/internal/gameplay/players/selectstrategy"
 	"github.com/vasilesk/fool/pkg/card"
 	"github.com/vasilesk/fool/pkg/identity"
 )
@@ -50,7 +50,7 @@ func (g Game) Run() (identity.Identity, error) {
 			break
 		}
 
-		cards, taken, err = round.NewRound(attacker, defender, g.deck.Trump().Suit()).Run()
+		cards, taken, err = round.NewRound(attacker, defender, g.deck.TrumpCard().Suit()).Run()
 		if err != nil {
 			return nil, fmt.Errorf("running round: %w", err)
 		}

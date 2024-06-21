@@ -4,7 +4,7 @@ package console
 import (
 	"fmt"
 
-	"github.com/vasilesk/fool/internal/game/players/player"
+	"github.com/vasilesk/fool/internal/gameplay/players/player"
 	"github.com/vasilesk/fool/pkg/card"
 	"github.com/vasilesk/fool/pkg/identity"
 )

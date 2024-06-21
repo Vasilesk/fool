@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"slices"
 
-	"github.com/vasilesk/fool/internal/game/cards/deck"
+	"github.com/vasilesk/fool/internal/gameplay/cards/deck"
 	"github.com/vasilesk/fool/pkg/card"
 )
 
@@ -43,7 +43,7 @@ func (d *stdDeck) TakeMax(lim int) []card.Card {
 	return res
 }
 
-func (d *stdDeck) Trump() card.Card {
+func (d *stdDeck) TrumpCard() card.Card {
 	return d.trump
 }
 

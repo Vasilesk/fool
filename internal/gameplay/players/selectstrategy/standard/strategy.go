@@ -3,8 +3,8 @@ package standard
 import (
 	"fmt"
 
-	"github.com/vasilesk/fool/internal/game/players/player"
-	"github.com/vasilesk/fool/internal/game/players/selectstrategy"
+	"github.com/vasilesk/fool/internal/gameplay/players/player"
+	"github.com/vasilesk/fool/internal/gameplay/players/selectstrategy"
 )
 
 type ffa struct {

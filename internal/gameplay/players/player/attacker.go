@@ -1,7 +1,7 @@
 package player
 
 import (
-	"github.com/vasilesk/fool/internal/game/cards/beaten"
+	"github.com/vasilesk/fool/internal/gameplay/cards/beaten"
 	"github.com/vasilesk/fool/pkg/card"
 	"github.com/vasilesk/fool/pkg/identity"
 )

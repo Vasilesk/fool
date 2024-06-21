@@ -1,7 +1,7 @@
 package selectstrategy
 
 import (
-	"github.com/vasilesk/fool/internal/game/players/player"
+	"github.com/vasilesk/fool/internal/gameplay/players/player"
 )
 
 type Strategy interface {

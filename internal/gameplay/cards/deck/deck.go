@@ -6,5 +6,5 @@ import (
 
 type Deck interface {
 	TakeMax(lim int) []card.Card
-	Trump() card.Card
+	TrumpCard() card.Card
 }

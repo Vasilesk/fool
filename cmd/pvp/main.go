@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/vasilesk/fool/internal/game"
-	deskstandard "github.com/vasilesk/fool/internal/game/cards/deck/standard"
-	"github.com/vasilesk/fool/internal/game/gameplay"
-	orderstrategyrandom "github.com/vasilesk/fool/internal/game/players/orderstrategy/random"
-	"github.com/vasilesk/fool/internal/game/players/player"
-	"github.com/vasilesk/fool/internal/game/players/player/console"
-	selectstrategystandard "github.com/vasilesk/fool/internal/game/players/selectstrategy/standard"
+	"github.com/vasilesk/fool/internal/gameplay"
+	deskstandard "github.com/vasilesk/fool/internal/gameplay/cards/deck/standard"
+	"github.com/vasilesk/fool/internal/gameplay/game"
+	orderstrategyrandom "github.com/vasilesk/fool/internal/gameplay/players/orderstrategy/random"
+	"github.com/vasilesk/fool/internal/gameplay/players/player"
+	"github.com/vasilesk/fool/internal/gameplay/players/player/console"
+	selectstrategystandard "github.com/vasilesk/fool/internal/gameplay/players/selectstrategy/standard"
 )
 
 func main() {
@@ -24,12 +24,12 @@ func main() {
 func run() error {
 	d := deskstandard.NewDeck()
 
-	p1, err := console.NewPlayer(d.TakeMax(gameplay.MaxCardsOfPlayer), d.Trump().Suit())
+	p1, err := console.NewPlayer(d.TakeMax(gameplay.MaxCardsOfPlayer), d.TrumpCard().Suit())
 	if err != nil {
 		return fmt.Errorf("creating player 1: %w", err)
 	}
 
-	p2, err := console.NewPlayer(d.TakeMax(gameplay.MaxCardsOfPlayer), d.Trump().Suit())
+	p2, err := console.NewPlayer(d.TakeMax(gameplay.MaxCardsOfPlayer), d.TrumpCard().Suit())
 	if err != nil {
 		return fmt.Errorf("creating player 2: %w", err)
 	}

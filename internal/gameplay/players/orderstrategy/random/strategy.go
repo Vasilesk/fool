@@ -3,8 +3,8 @@ package random
 import (
 	"math/rand"
 
-	"github.com/vasilesk/fool/internal/game/players/orderstrategy"
-	"github.com/vasilesk/fool/internal/game/players/player"
+	"github.com/vasilesk/fool/internal/gameplay/players/orderstrategy"
+	"github.com/vasilesk/fool/internal/gameplay/players/player"
 )
 
 type random struct{}

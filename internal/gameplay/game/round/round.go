@@ -6,9 +6,9 @@ import (
 
 	"github.com/samber/lo"
 
-	"github.com/vasilesk/fool/internal/game/cards/beaten"
-	"github.com/vasilesk/fool/internal/game/gameplay"
-	"github.com/vasilesk/fool/internal/game/players/player"
+	"github.com/vasilesk/fool/internal/gameplay"
+	"github.com/vasilesk/fool/internal/gameplay/cards/beaten"
+	"github.com/vasilesk/fool/internal/gameplay/players/player"
 	"github.com/vasilesk/fool/pkg/card"
 )
 
